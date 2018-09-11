@@ -7,27 +7,28 @@ RUN yum -y update && \
  yum -y install tar
 
 # Prepare environment
-ENV JAVA_HOME /opt/java
+ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64
 ENV CATALINA_HOME /opt/tomcat
-ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/bin:$CATALINA_HOME/scripts
+ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/bin
 
 # Install Oracle Java8
-ENV JAVA_VERSION 8u162
-ENV JAVA_BUILD 8u162-b12
-ENV JAVA_DL_HASH 0da788060d494f5095bf8624735fa2f1
+#ENV JAVA_VERSION 8u162
+#ENV JAVA_BUILD 8u162-b12
+#ENV JAVA_DL_HASH 0da788060d494f5095bf8624735fa2f1
 
-RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
- http://download.oracle.com/otn-pub/java/jdk/${JAVA_BUILD}/${JAVA_DL_HASH}/jdk-${JAVA_VERSION}-linux-x64.tar.gz && \
- tar -xvf jdk-${JAVA_VERSION}-linux-x64.tar.gz && \
- rm jdk*.tar.gz && \
- mv jdk* ${JAVA_HOME}
+#RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
+# http://download.oracle.com/otn-pub/java/jdk/${JAVA_BUILD}/${JAVA_DL_HASH}/jdk-${JAVA_VERSION}-linux-x64.tar.gz && \
+# tar -xvf jdk-${JAVA_VERSION}-linux-x64.tar.gz && \
+# rm jdk*.tar.gz && \
+# mv jdk* ${JAVA_HOME}
 
+RUN yum install -y java-1.8.0-openjdk-devel
 
 # Install Tomcat
 ENV TOMCAT_MAJOR 8
-ENV TOMCAT_VERSION 8.5.28
+ENV TOMCAT_VERSION 8.5.33
 
-RUN wget http://mirror.linux-ia64.org/apache/tomcat/tomcat-${TOMCAT_MAJOR}/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
+RUN wget http://www-us.apache.org/dist/tomcat/tomcat-${TOMCAT_MAJOR}/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
  tar -xvf apache-tomcat-${TOMCAT_VERSION}.tar.gz && \
  rm apache-tomcat*.tar.gz && \
  mv apache-tomcat* ${CATALINA_HOME}
@@ -35,9 +36,9 @@ RUN wget http://mirror.linux-ia64.org/apache/tomcat/tomcat-${TOMCAT_MAJOR}/v${TO
 RUN chmod +x ${CATALINA_HOME}/bin/*sh
 
 # Create Tomcat admin user
-ADD create_admin_user.sh $CATALINA_HOME/scripts/create_admin_user.sh
-ADD tomcat.sh $CATALINA_HOME/scripts/tomcat.sh
-RUN chmod +x $CATALINA_HOME/scripts/*.sh
+#ADD create_admin_user.sh $CATALINA_HOME/scripts/create_admin_user.sh
+#ADD tomcat.sh $CATALINA_HOME/scripts/tomcat.sh
+#RUN chmod +x $CATALINA_HOME/scripts/*.sh
 
 # Create tomcat user
 RUN groupadd -r tomcat && \
@@ -47,7 +48,7 @@ RUN groupadd -r tomcat && \
 WORKDIR /opt/tomcat
 
 EXPOSE 8080
-EXPOSE 8009
+#EXPOSE 8009
 
 USER tomcat
-CMD ["tomcat.sh"]
+CMD ["/opt/tomcat/bin/catalina.sh", "run"]
