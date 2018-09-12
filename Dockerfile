@@ -34,10 +34,10 @@ RUN groupadd -r tomcat && \
  useradd -g tomcat -d ${CATALINA_HOME} -s /sbin/nologin  -c "Tomcat user" tomcat && \
  chown -R tomcat:tomcat ${CATALINA_HOME}
 
-WORKDIR /opt/tomcat
+COPY  apps/ /opt/tomcat/webapps/
+#RUN cp -r ./helloworld /opt/tomcat/webapps/
 
 EXPOSE 8080
-#EXPOSE 8009
 
 USER tomcat
 CMD ["/opt/tomcat/bin/catalina.sh", "run"]
