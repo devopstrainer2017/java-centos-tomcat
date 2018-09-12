@@ -11,17 +11,6 @@ ENV JAVA_HOME /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.181-3.b13.el7_5.x86_64
 ENV CATALINA_HOME /opt/tomcat
 ENV PATH $PATH:$JAVA_HOME/bin:$CATALINA_HOME/bin
 
-# Install Oracle Java8
-#ENV JAVA_VERSION 8u162
-#ENV JAVA_BUILD 8u162-b12
-#ENV JAVA_DL_HASH 0da788060d494f5095bf8624735fa2f1
-
-#RUN wget --no-check-certificate --no-cookies --header "Cookie: oraclelicense=accept-securebackup-cookie" \
-# http://download.oracle.com/otn-pub/java/jdk/${JAVA_BUILD}/${JAVA_DL_HASH}/jdk-${JAVA_VERSION}-linux-x64.tar.gz && \
-# tar -xvf jdk-${JAVA_VERSION}-linux-x64.tar.gz && \
-# rm jdk*.tar.gz && \
-# mv jdk* ${JAVA_HOME}
-
 RUN yum install -y java-1.8.0-openjdk-devel
 
 # Install Tomcat
